@@ -5,6 +5,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.ie.InternetExplorerDriver
 import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
 import org.openqa.selenium.chrome.ChromeDriverService
 import org.openqa.selenium.ie.InternetExplorerDriverService
 import org.openqa.selenium.remote.RemoteWebDriver
@@ -60,7 +61,12 @@ class Browser{
         service = new ChromeDriverService.Builder().usingPort(9518).usingDriverExecutable(new File("chromedriver.exe")).build()
       }
       service.start()
-      Driver = new RemoteWebDriver(service.getUrl(),DesiredCapabilities.chrome())
+      ChromeOptions options = new ChromeOptions()
+      options.addArguments("--disable-dev-shm-usage")
+      DesiredCapabilities cap = DesiredCapabilities.chrome()
+      cap.setCapability(ChromeOptions.CAPABILITY, options)
+      Driver = new RemoteWebDriver(service.getUrl(),cap)
+      //Driver = new RemoteWebDriver(service.getUrl(),DesiredCapabilities.chrome())
     }
     else{
       def serviceIE = new InternetExplorerDriverService.Builder().usingPort(9516).usingDriverExecutable(new File("MicrosoftWebDriver.exe")).build()
